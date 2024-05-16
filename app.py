@@ -112,7 +112,7 @@ if uploaded_file is not None:
         while i <= st.session_state.num_filter:
 
             st.sidebar.multiselect(f"File {i}", options = st.session_state.filters, default = [], key = f"File-{i}")
-            st.sidebar.text_input("", value = f"File-{i}.xlsx", placeholder = f"File {i}.xlsx" , label_visibility="collapsed", key = f"Filename-{i}")
+            st.sidebar.text_input("Random", value = f"File-{i}.xlsx", placeholder = f"File {i}.xlsx" , label_visibility="collapsed", key = f"Filename-{i}")
 
 
             i = i + 1

@@ -3,6 +3,8 @@ import json
 import pandas as pd
 import time
 import zipfile
+from openpyxl import load_workbook
+from openpyxl.styles import Font, Alignment
 
 #####################
 #### VERSION 1.0 ####
@@ -41,6 +43,22 @@ def generate_files():
         sub_df = sub_df.drop("State-County", axis = 1)
         sub_df.to_excel(filename, index = False)
 
+        ####
+        wb = load_workbook(filename)
+        ws = wb.active
+
+        header_font = Font(name='Calibri', size=11, bold=False)
+        header_alignment = Alignment(horizontal='left', vertical='center')
+
+        # Apply formatting to the header row
+        for cell in ws[1]:  # Header is in the first row
+            cell.font = header_font
+            cell.alignment = header_alignment
+            cell.border = None  # No border
+
+        wb.save(filename)
+        ####
+        
         i += 1
 
 

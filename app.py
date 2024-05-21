@@ -89,7 +89,7 @@ def generate_files():
 
 @st.cache_data
 def read_excel(uploaded_file):
-    df = pd.read_excel(uploaded_file, dtype={'your_date_column': str})
+    df = pd.read_excel(uploaded_file)
     date_columns = df.select_dtypes(include=['datetime', 'datetime64[ns]', 'timedelta']).columns
 
     for col in date_columns:

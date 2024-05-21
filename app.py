@@ -85,6 +85,10 @@ def generate_files():
 
 
 
+@st.cache_data
+def read_excel(uploaded_file):
+    df = pd.read_excel(uploaded_file)
+    return df
 
 if "num_filter" not in st.session_state:
     st.session_state.num_filter = 1
@@ -102,7 +106,8 @@ uploaded_file = st.file_uploader("Choose a .csv/.xlsx file", type = ["csv", "xls
 
 if uploaded_file is not None:
 
-    df = pd.read_excel(uploaded_file)
+    # df = pd.read_excel(uploaded_file)
+    df = read_excel(uploaded_file)
 
     cols_required = ["Filing_County", "Filing_State"] 
     cols_not_found = []

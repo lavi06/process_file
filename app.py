@@ -41,7 +41,9 @@ def generate_files():
 
         sub_df = df[df["State-County"].isin(filters)]
         sub_df = sub_df.drop("State-County", axis = 1)
-        sub_df.to_excel(filename, index = False)
+        # sub_df.to_excel(filename, index = False)
+        with pd.ExcelWriter(filename, datetime_format='YYYY-MM-DD') as writer:
+            sub_df.to_excel(writer, index=False)
 
         ####
         wb = load_workbook(filename)
@@ -87,7 +89,11 @@ def generate_files():
 
 @st.cache_data
 def read_excel(uploaded_file):
-    df = pd.read_excel(uploaded_file)
+    df = pd.read_excel(uploaded_file, dtype={'your_date_column': str})
+    date_columns = df.select_dtypes(include=['datetime', 'datetime64[ns]', 'timedelta']).columns
+
+    for col in date_columns:
+        df[col] = df[col].astype(str)
     return df
 
 if "num_filter" not in st.session_state:

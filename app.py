@@ -25,9 +25,9 @@ def add_filter():
 
 
 def generate_files():
+
     df = st.session_state.df
     num_filter = st.session_state.num_filter
-
 
     i = 1
     while i <= num_filter:
@@ -41,9 +41,10 @@ def generate_files():
 
         sub_df = df[df["State-County"].isin(filters)]
         sub_df = sub_df.drop("State-County", axis = 1)
-        # sub_df.to_excel(filename, index = False)
-        with pd.ExcelWriter(filename, datetime_format='YYYY-MM-DD') as writer:
-            sub_df.to_excel(writer, index=False)
+
+        sub_df.to_excel(filename, index = False)
+        # with pd.ExcelWriter(filename, datetime_format='YYYY-MM-DD') as writer:
+        #     sub_df.to_excel(writer, index=False)
 
         ####
         wb = load_workbook(filename)
@@ -87,14 +88,29 @@ def generate_files():
 
 
 
+
 @st.cache_data
 def read_excel(uploaded_file):
     df = pd.read_excel(uploaded_file)
-    date_columns = df.select_dtypes(include=['datetime', 'datetime64[ns]', 'timedelta']).columns
 
-    for col in date_columns:
-        df[col] = df[col].astype(str)
+    df["State-County"] = df["Filing_County"] + "-" + df["Filing_State"]
+
+    column_type_mapping = {}
+
+    for column_name, data_type in df.dtypes.items():
+        column_type_mapping[column_name] = str(data_type)
+
+        if "date" in str(data_type):
+
+            df[column_name] = pd.to_datetime(df[column_name], errors='coerce')
+
+            df[column_name] = df[column_name].dt.strftime('%m/%d/%Y')
+
+
     return df
+
+
+
 
 if "num_filter" not in st.session_state:
     st.session_state.num_filter = 1
@@ -128,7 +144,7 @@ if uploaded_file is not None:
 
 
     else:
-        df["State-County"] = df["Filing_County"] + "-" + df["Filing_State"]
+        # df["State-County"] = df["Filing_County"] + "-" + df["Filing_State"]
 
         st.session_state.df = df
         st.session_state.filters = list(df["State-County"].unique())

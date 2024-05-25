@@ -98,6 +98,8 @@ def read_excel(uploaded_file):
     column_type_mapping = {}
 
     for column_name, data_type in df.dtypes.items():
+        st.write(column_name, ":", data_type)
+        
         column_type_mapping[column_name] = str(data_type)
 
         if "date" in str(data_type):
@@ -105,7 +107,6 @@ def read_excel(uploaded_file):
             df[column_name] = pd.to_datetime(df[column_name], errors='coerce')
 
             df[column_name] = df[column_name].dt.strftime('%m/%d/%Y')
-
 
     return df
 

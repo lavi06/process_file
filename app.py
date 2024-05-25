@@ -98,11 +98,11 @@ def read_excel(uploaded_file):
     column_type_mapping = {}
 
     for column_name, data_type in df.dtypes.items():
-        st.write(column_name, ":", data_type)
         
         column_type_mapping[column_name] = str(data_type)
 
         if "date" in str(data_type):
+            st.write(column_name, ":", data_type)
 
             df[column_name] = pd.to_datetime(df[column_name], errors='coerce')
 

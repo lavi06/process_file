@@ -102,13 +102,9 @@ def read_excel(uploaded_file):
         column_type_mapping[column_name] = str(data_type)
 
         if "date" in str(data_type):
-            st.write(column_name, ":", data_type)
-            st.write(df)
             df[column_name] = pd.to_datetime(df[column_name], errors='coerce')
 
             df[column_name] = df[column_name].dt.strftime('%m/%d/%Y')
-            st.write(df)
-            st.write("-===========")
     return df
 
 
@@ -132,7 +128,7 @@ if uploaded_file is not None:
 
     # df = pd.read_excel(uploaded_file)
     df = read_excel(uploaded_file)
-
+    st.write(df)
     # cols_required = ["Filing_County", "Filing_State"] 
     # cols_not_found = []
     # for col in cols_required:

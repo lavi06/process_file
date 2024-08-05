@@ -89,7 +89,18 @@ def generate_files():
 
 
 def convert_datetime_to_str(series):
-    return series.apply(lambda x: '' if pd.isna(x) else x.strftime('%m/%d/%Y'))
+    def safe_strftime(x):
+        try:
+            if pd.isna(x):
+                return ''
+            else:
+                return x.strftime('%m/%d/%Y')
+        except Exception as e:
+            # Log the error if needed, for debugging purposes
+            print(f"Error converting value {x}: {e}")
+            return x  # Return the original value in case of an error
+    
+    return series.apply(safe_strftime)
 
 
 @st.cache_data

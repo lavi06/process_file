@@ -88,6 +88,9 @@ def generate_files():
 
 
 
+def convert_datetime_to_str(series):
+    return series.apply(lambda x: '' if pd.isna(x) else x.strftime('%m/%d/%Y'))
+
 
 @st.cache_data
 def read_excel(uploaded_file):
@@ -102,11 +105,11 @@ def read_excel(uploaded_file):
         column_type_mapping[column_name] = str(data_type)
 
         if "date" in str(data_type):
-            df[column_name] = pd.to_datetime(df[column_name], errors='coerce')
+            # df[column_name] = pd.to_datetime(df[column_name], errors='coerce')
+            # df[column_name] = df[column_name].dt.strftime('%m/%d/%Y')
+            df[column_name] = convert_datetime_to_str(df[column_name])
 
-            df[column_name] = df[column_name].dt.strftime('%m/%d/%Y')
     return df
-
 
 
 

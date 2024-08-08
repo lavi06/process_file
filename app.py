@@ -13,8 +13,6 @@ from openpyxl.styles import Font, Alignment
 
 ################################################################################
 
-
-
 st.set_page_config(page_title="Process File", page_icon=":bar_chart:")
 # st.image("Logo.png", caption=None, width=250, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
 
@@ -105,7 +103,7 @@ def convert_datetime_to_str(series):
     return series.apply(safe_strftime)
 
 
-@st.cache_data
+# @st.cache_data
 def read_excel(uploaded_file):
     df = pd.read_excel(uploaded_file)
 
@@ -124,8 +122,6 @@ def read_excel(uploaded_file):
 
     return df
 
-
-
 if "num_filter" not in st.session_state:
     st.session_state.num_filter = 1
 
@@ -138,7 +134,6 @@ if "df" not in st.session_state:
 
 
 uploaded_file = st.file_uploader("Choose a .csv/.xlsx file", type = ["csv", "xlsx"])
-
 
 if uploaded_file is not None:
 

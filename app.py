@@ -89,12 +89,12 @@ def generate_files():
 
 
 def convert_datetime_to_str(series):
-    return series
+    # return series
     
     def safe_strftime(x):
         try:
             if pd.isna(x):
-                return ''
+                return None
             else:
                 return x.strftime('%m/%d/%Y')
         except Exception as e:
